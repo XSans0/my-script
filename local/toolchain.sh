@@ -25,7 +25,7 @@ function clear_clang() {
 # Menu
 while true; do
     panel ""
-    panel " Clang Menu                                                         "
+    panel " Toolchain Menu                                                         "
     panel " ╔═════════════════════════════════════════════════════════════════╗"
     panel " ║ 1. Azure Clang 15.x                                             ║"
     panel " ║ 2. AOSP  Clang 15.x                                             ║"
@@ -80,6 +80,6 @@ while true; do
 		# include files
 		msg "* Skip this menu"
 		sleep 10
-		source gobuild.sh
+		source build.sh
 	fi
 done

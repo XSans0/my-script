@@ -74,11 +74,11 @@ elif [[ "$(cat toolchain.txt)" == "sdclang" ]]; then
 
     msg "(Y) ${KBUILD_COMPILER_STRING} detected."
 else
-    err "(X) Clang not found, please clone first!"
+    err "(X) Toolchain not found, please clone first!"
     msg ""
-    msg "* Load clang source"
+    msg "* Load toolchain source"
     sleep 10
-    source clang.sh
+    source toolchain.sh
 fi
 
 # Clone Source
@@ -116,7 +116,7 @@ export KBUILD_BUILD_USER="XSansツ"
 export KBUILD_BUILD_HOST="Wibu-Server"
 
 # Include files
-source telegram.sh
+source $HOME/telegram.sh
 
 # Menu
 while true; do
