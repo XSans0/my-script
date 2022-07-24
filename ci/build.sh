@@ -130,7 +130,7 @@ start_msg() {
     send_msg "<b>New Kernel On The Way</b>" \
                  "<b>==================================</b>" \
                  "<b>Device : </b>" \
-                 "<code>* $CODENAME</code>" \
+                 "<code>* $DEVICE</code>" \
                  "<b>Branch : </b>" \
                  "<code>* $BRANCH</code>" \
                  "<b>Build Using : </b>" \
