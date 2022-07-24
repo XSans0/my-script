@@ -190,7 +190,7 @@ elif [[ "${COMPILE}" == "gcc" ]]; then
     make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
         CROSS_COMPILE=${ARM64} \
-        CROSS_COMPILE_COMPAT=${ARM32} | tee ${KERNEL_LOG}
+        CROSS_COMPILE_COMPAT=${ARM32} 2>&1 | tee ${KERNEL_LOG}
 
     if [[ -f "$KERNEL_IMG" ]]; then
         END=$(date +"%s")
