@@ -39,10 +39,15 @@ elif [[ "${TC}" == "aosp14" ]]; then
     git clone --depth=1 https://github.com/XSans0/arm-linux-androideabi-4.9 arm32
 elif [[ "${TC}" == "weebx15" ]]; then
     msg "* Clone WeebX Clang 15.x"
-    git clone -b release/15-gr --depth=1 https://gitlab.com/XSans0/weebx-clang.git clang
+    git clone --depth=1 -b release/15-gr --depth=1 https://gitlab.com/XSans0/weebx-clang.git clang
 elif [[ "${TC}" == "weebx14" ]]; then
     msg "* Clone WeebX Clang 14.x"
-    git clone -b main --depth=1 https://gitlab.com/XSans0/weebx-clang.git clang
+    git clone --depth=1 -b main --depth=1 https://gitlab.com/XSans0/weebx-clang.git clang
+elif [[ "${TC}" == "gcc12" ]]; then
+    msg "* Clone GCC 12.x"
+    GCC=y
+    git clone --depth=1 -b elf-gcc-12-tarballs https://github.com/fiqri19102002/aarch64-gcc.git arm64
+    git clone --depth=1 -b elf-gcc-12-tarballs https://github.com/fiqri19102002/arm-gcc.git arm32
 fi
 
 # Setup
@@ -67,14 +72,24 @@ if [[ "$NEED_GCC" == "y" ]]; then
     ARM64="aarch64-linux-android-"
     ARM32="arm-linux-androideabi-"
     TRIPLE="aarch64-linux-gnu-"
+    COMPILE="clang"
     export PATH="$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
     export KBUILD_COMPILER_STRING="$(${CLANG_DIR}/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
+elif [[ "$GCC" == "y" ]]; then
+    GCC64_DIR="$KERNEL_DIR/arm64"
+    GCC32_DIR="$KERNEL_DIR/arm32"
+    ARM64="$GCC64_DIR/bin/aarch64-elf-"
+    ARM32="$GCC32_DIR/bin/arm-eabi-"
+    COMPILE="gcc"
+    export PATH="$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
+    export KBUILD_COMPILER_STRING="$(${GCC_64}/bin/aarch64-elf-gcc --version | head -n 1)"
 else
     CLANG_DIR="$KERNEL_DIR/clang"
     PrefixDir="$CLANG_DIR/bin/"
     ARM64="aarch64-linux-gnu-"
     ARM32="arm-linux-gnueabi-"
     TRIPLE="aarch64-linux-gnu-"
+    COMPILE="clang"
     export PATH="$CLANG_DIR/bin:$PATH"
     export KBUILD_COMPILER_STRING="$(${CLANG_DIR}/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 fi
@@ -141,8 +156,9 @@ START=$(date +"%s")
 msg "* Start Compile kernel for $DEVICE using $CPU $CORES thread"
 start_msg
 
-make O=out "$DEVICE"_defconfig
-make -j"$CORES" O=out \
+if [[ "${COMPILE}" == "clang" ]]; then
+    make O=out "$DEVICE"_defconfig
+    make -j"$CORES" O=out \
         CC=${PrefixDir}clang \
         LD=${PrefixDir}ld.lld \
         AR=${PrefixDir}llvm-ar \
@@ -160,15 +176,32 @@ make -j"$CORES" O=out \
         CROSS_COMPILE_COMPAT=${ARM32} \
         LLVM=1 2>&1 | tee ${KERNEL_LOG}
 
-if [[ -f "$KERNEL_IMG" ]]; then
-    END=$(date +"%s")
-    TOTAL_TIME=$(("END" - "START"))
-    msg "* Compile Kernel for $DEVICE successfully."
-    msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
-else
-    err "* Compile Kernel for $DEVICE failed, See buildlog to fix errors"
-    send_log "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
-    exit
+    if [[ -f "$KERNEL_IMG" ]]; then
+        END=$(date +"%s")
+        TOTAL_TIME=$(("END" - "START"))
+        msg "* Compile Kernel for $DEVICE successfully."
+        msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
+    else
+        err "* Compile Kernel for $DEVICE failed, See buildlog to fix errors"
+        send_log "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
+        exit
+    fi
+elif [[ "${COMPILE}" == "gcc" ]]; then
+    make O=out "$DEVICE"_defconfig
+    make -j"$CORES" O=out \
+        CROSS_COMPILE=${ARM64} \
+        CROSS_COMPILE_COMPAT=${ARM32} | tee ${KERNEL_LOG}
+
+    if [[ -f "$KERNEL_IMG" ]]; then
+        END=$(date +"%s")
+        TOTAL_TIME=$(("END" - "START"))
+        msg "* Compile Kernel for $DEVICE successfully."
+        msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
+    else
+        err "* Compile Kernel for $DEVICE failed, See buildlog to fix errors"
+        send_log "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
+        exit
+    fi
 fi
 
 # Copy Image, dtbo, dtb
