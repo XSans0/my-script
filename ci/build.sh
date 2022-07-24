@@ -178,6 +178,13 @@ if [[ "${COMPILE}" == "clang" ]]; then
 elif [[ "${COMPILE}" == "gcc" ]]; then
     make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
+        LD=ld.lld \
+        AR=llvm-ar \
+        NM=llvm-nm \
+        STRIP=llvm-strip \
+        OBJCOPY=llvm-objcopy \
+        OBJDUMP=llvm-objdump \
+        READELF=llvm-readelf \
         CROSS_COMPILE=${ARM64} \
         CROSS_COMPILE_COMPAT=${ARM32} \
         CROSS_COMPILE_ARM32=${ARM32} 2>&1 | tee "${KERNEL_LOG}"
