@@ -82,7 +82,7 @@ elif [[ "$GCC" == "y" ]]; then
     ARM32="$GCC32_DIR/bin/arm-eabi-"
     COMPILE="gcc"
     export PATH="$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
-    export KBUILD_COMPILER_STRING="$(${GCC_64}/bin/aarch64-elf-gcc --version | head -n 1)"
+    export KBUILD_COMPILER_STRING="$(${GCC64_DIR}/bin/aarch64-elf-gcc --version | head -n 1)"
 else
     CLANG_DIR="$KERNEL_DIR/clang"
     PrefixDir="$CLANG_DIR/bin/"
