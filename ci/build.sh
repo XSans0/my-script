@@ -197,7 +197,7 @@ if [[ "${COMPILE}" == "clang" ]]; then
 elif [[ "${COMPILE}" == "gcc" ]]; then
     make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
-        CC=${CCACHE}${ARM64}-gcc \
+        CC=${CCACHE}${ARM64}gcc \
         LD=ld.lld \
         AR=llvm-ar \
         NM=llvm-nm \
