@@ -11,7 +11,7 @@ err() {
 }
 
 # Cancel if something is missing
-if [[ -z "${TELEGRAM_TOKEN}" ]] || [[ -z "${CHANNEL_ID}" ]] || [[ -z "${GIT_TOKEN}" ]] || [[ -z "${TC}" ]]; then
+if [[ -z "${TELEGRAM_TOKEN}" ]] || [[ -z "${TELEGRAM_CHAT}" ]] || [[ -z "${TC}" ]]; then
     err "* There is something missing!"
     exit
 fi
@@ -115,7 +115,7 @@ git clone --depth=1 https://github.com/XSans0/Telegram Telegram
 
 TELEGRAM="$KERNEL_DIR/Telegram/telegram"
 send_msg() {
-  "${TELEGRAM}" -c "${CHANNEL_ID}" -H -D \
+  "${TELEGRAM}" -H -D \
       "$(
           for POST in "${@}"; do
               echo "${POST}"
@@ -123,17 +123,12 @@ send_msg() {
       )"
 }
 
-send_kernel() {
-  "${TELEGRAM}" -f "$(echo "$AK3_DIR"/$ZIP_NAME)" \
-  -c "${CHANNEL_ID}" -H \
-      "$1"
+send_file() {
+    "${TELEGRAM}" -H \
+    -f "$1" \
+    "$2"
 }
 
-send_log() {
-  "${TELEGRAM}" -f "$(echo "$KERNEL_LOG")" \
-  -c "${CHANNEL_ID}" -H \
-      "$1"
-}
 start_msg() {
     send_msg "<b>New Kernel On The Way</b>" \
                  "<b>==================================</b>" \
@@ -145,17 +140,6 @@ start_msg() {
                  "<code>* $CPU $CORES thread</code>" \
                  "<b>Last Commit : </b>" \
                  "<code>* $COMMIT</code>" \
-                 "<b>==================================</b>"
-}
-end_msg() {
-    send_msg "<b>Build Successfully</b>" \
-                 "<b>==================================</b>" \
-                 "<b>Build Date : </b>" \
-                 "<code>* $(date +"%A, %d %b %Y, %H:%M:%S")</code>" \
-                 "<b>Build Took : </b>" \
-                 "<code>* $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second.</code>" \
-                 "<b>Compiler : </b>" \
-                 "<code>* $KBUILD_COMPILER_STRING</code>" \
                  "<b>==================================</b>"
 }
 
@@ -241,6 +225,18 @@ ZIP_NAME=["$ZIP_DATE"]WeebX-Personal-"$ZIP_DATE2".zip
 zip -r9 "$ZIP_NAME" ./*
 
 # Upload build
-send_log "<b>Compile Kernel for $DEVICE successfully.</b>"
-send_kernel "<b>md5 : </b><code>$(md5sum "$AK3_DIR/$ZIP_NAME" | cut -d' ' -f1)</code>"
-end_msg
+send_file "$KERNEL_LOG" "<b>Compile Kernel for $DEVICE successfully.</b>"
+send_file "$AK3_DIR/$ZIP_NAME" "
+<b>Build Successfully</b>
+<b>=================================</b>
+<b>Build Date : </b>
+<code>* $(date +"%A, %d %b %Y, %H:%M:%S")</code>
+<b>Build Took : </b>
+<code>* $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second.</code>
+<b>Linux Version : </b>
+* <code>$(grep Linux "KERNEL_DIR/out/.config" | cut -f 3 -d " ")</code>
+<b>Md5 : </b>
+* <code>$(md5sum "$AK3_DIR/$ZIP_NAME" | cut -d' ' -f1)</code>
+<b>Compiler : </b>
+<code>* $KBUILD_COMPILER_STRING</code>
+<b>=================================</b>"
