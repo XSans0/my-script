@@ -228,15 +228,15 @@ zip -r9 "$ZIP_NAME" ./*
 send_file "$KERNEL_LOG" "<b>Compile Kernel for $DEVICE successfully.</b>"
 send_file "$AK3_DIR/$ZIP_NAME" "
 <b>Build Successfully</b>
-<b>=================================</b>
+<b>============================</b>
 <b>Build Date : </b>
 <code>* $(date +"%A, %d %b %Y, %H:%M:%S")</code>
 <b>Build Took : </b>
 <code>* $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second.</code>
 <b>Linux Version : </b>
-* <code>$(grep Linux "KERNEL_DIR/out/.config" | cut -f 3 -d " ")</code>
+<code>* v$(grep Linux "$KERNEL_DIR"/out/.config | cut -f 3 -d " ")</code>
 <b>Md5 : </b>
-* <code>$(md5sum "$AK3_DIR/$ZIP_NAME" | cut -d' ' -f1)</code>
+<code>* $(md5sum "$AK3_DIR/$ZIP_NAME" | cut -d' ' -f1)</code>
 <b>Compiler : </b>
 <code>* $KBUILD_COMPILER_STRING</code>
-<b>=================================</b>"
+<b>============================</b>"
