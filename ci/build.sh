@@ -230,7 +230,7 @@ send_file "$AK3_DIR/$ZIP_NAME" "
 <b>Build Successfully</b>
 <b>============================</b>
 <b>Build Date : </b>
-<code>* $(date +"%A, %d %b %Y, %H:%M:%S")</code>
+<code>* $(date +"%A, %d %b %Y")</code>
 <b>Build Took : </b>
 <code>* $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second.</code>
 <b>Linux Version : </b>
