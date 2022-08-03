@@ -176,7 +176,7 @@ if [[ "${COMPILE}" == "clang" ]]; then
         msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
     else
         err "* Compile Kernel for $DEVICE failed, See buildlog to fix errors"
-        send_log "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
+        send_file "$KERNEL_LOG" "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
         exit
     fi
 elif [[ "${COMPILE}" == "gcc" ]]; then
@@ -201,7 +201,7 @@ elif [[ "${COMPILE}" == "gcc" ]]; then
         msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
     else
         err "* Compile Kernel for $DEVICE failed, See buildlog to fix errors"
-        send_log "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
+        send_file "$KERNEL_LOG" "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
         exit
     fi
 fi
