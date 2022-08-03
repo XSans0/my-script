@@ -48,6 +48,11 @@ elif [[ "${TC}" == "weebx15" ]]; then
 elif [[ "${TC}" == "weebx14" ]]; then
     msg "* Clone WeebX Clang 14.x"
     git clone --depth=1 -b main --depth=1 https://gitlab.com/XSans0/weebx-clang.git clang
+elif [[ "${TC}" == "gcc13" ]]; then
+    msg "* Clone GCC 13.x"
+    GCC=y
+    git clone --depth=1 -b gcc-master https://github.com/mvaisakh/gcc-arm64.git arm64
+    git clone --depth=1 -b gcc-master https://github.com/mvaisakh/gcc-arm.git arm32
 elif [[ "${TC}" == "gcc12" ]]; then
     msg "* Clone GCC 12.x"
     GCC=y
