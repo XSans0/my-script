@@ -112,9 +112,6 @@ export KBUILD_BUILD_HOST="Wibu-Server"
 export BOT_MSG_URL="https://api.telegram.org/bot$BOT_TOKEN/sendMessage"
 export BOT_BUILD_URL="https://api.telegram.org/bot$BOT_TOKEN/sendDocument"
 
-# CCACHE Setup
-[[ $(which ccache) ]] && CCACHE="$(which ccache) "
-
 # Telegram Setup
 git clone --depth=1 https://github.com/XSans0/Telegram Telegram
 
@@ -156,7 +153,7 @@ start_msg
 if [[ "${COMPILE}" == "clang" ]]; then
     make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
-        CC=${CCACHE}${PrefixDir}clang \
+        CC=${PrefixDir}clang \
         LD=${PrefixDir}ld.lld \
         AR=${PrefixDir}llvm-ar \
         NM=${PrefixDir}llvm-nm \
@@ -187,7 +184,6 @@ if [[ "${COMPILE}" == "clang" ]]; then
 elif [[ "${COMPILE}" == "gcc" ]]; then
     make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
-        CC=${CCACHE}${ARM64}gcc \
         LD=ld.lld \
         AR=llvm-ar \
         NM=llvm-nm \
