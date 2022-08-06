@@ -83,16 +83,16 @@ if [[ "$NEED_GCC" == "y" ]]; then
     ARM32="arm-linux-androideabi-"
     TRIPLE="aarch64-linux-gnu-"
     COMPILE="clang"
-    export PATH="$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
-    export KBUILD_COMPILER_STRING="$(${CLANG_DIR}/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
+    PATH="$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
+    KBUILD_COMPILER_STRING="$("${CLANG_DIR}"/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 elif [[ "$GCC" == "y" ]]; then
     GCC64_DIR="$KERNEL_DIR/arm64"
     GCC32_DIR="$KERNEL_DIR/arm32"
     ARM64="$GCC64_DIR/bin/aarch64-elf-"
     ARM32="$GCC32_DIR/bin/arm-eabi-"
     COMPILE="gcc"
-    export PATH="$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
-    export KBUILD_COMPILER_STRING="$(${GCC64_DIR}/bin/aarch64-elf-gcc --version | head -n 1)"
+    PATH="$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
+    KBUILD_COMPILER_STRING="$("${GCC64_DIR}"/bin/aarch64-elf-gcc --version | head -n 1)"
 else
     CLANG_DIR="$KERNEL_DIR/clang"
     PrefixDir="$CLANG_DIR/bin/"
@@ -100,10 +100,11 @@ else
     ARM32="arm-linux-gnueabi-"
     TRIPLE="aarch64-linux-gnu-"
     COMPILE="clang"
-    export PATH="$CLANG_DIR/bin:$PATH"
-    export KBUILD_COMPILER_STRING="$(${CLANG_DIR}/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
+    PATH="$CLANG_DIR/bin:$PATH"
+    KBUILD_COMPILER_STRING="$("${CLANG_DIR}"/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 fi
 
+# Export
 export TZ="Asia/Jakarta"
 export ARCH="arm64"
 export SUBARCH="arm64"
@@ -111,6 +112,8 @@ export KBUILD_BUILD_USER="XSansツ"
 export KBUILD_BUILD_HOST="Wibu-Server"
 export BOT_MSG_URL="https://api.telegram.org/bot$BOT_TOKEN/sendMessage"
 export BOT_BUILD_URL="https://api.telegram.org/bot$BOT_TOKEN/sendDocument"
+export PATH
+export KBUILD_COMPILER_STRING
 
 # Telegram Setup
 git clone --depth=1 https://github.com/XSans0/Telegram Telegram
@@ -153,29 +156,26 @@ start_msg
 if [[ "${COMPILE}" == "clang" ]]; then
     make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
-        CC=${PrefixDir}clang \
-        LD=${PrefixDir}ld.lld \
-        AR=${PrefixDir}llvm-ar \
-        NM=${PrefixDir}llvm-nm \
-        HOSTCC=${PrefixDir}clang \
-        HOSTCXX=${PrefixDir}clang++ \
-        STRIP=${PrefixDir}llvm-strip \
-        OBJCOPY=${PrefixDir}llvm-objcopy \
-        OBJDUMP=${PrefixDir}llvm-objdump \
-        READELF=${PrefixDir}llvm-readelf \
-        OBJSIZE=${PrefixDir}llvm-size \
-        STRIP=${PrefixDir}llvm-strip \
+        CC="${PrefixDir}"clang \
+        LD="${PrefixDir}"ld.lld \
+        AR="${PrefixDir}"llvm-ar \
+        NM="${PrefixDir}"llvm-nm \
+        HOSTCC="${PrefixDir}"clang \
+        HOSTCXX="${PrefixDir}"clang++ \
+        STRIP="${PrefixDir}"llvm-strip \
+        OBJCOPY="${PrefixDir}"llvm-objcopy \
+        OBJDUMP="${PrefixDir}"llvm-objdump \
+        READELF="${PrefixDir}"llvm-readelf \
+        OBJSIZE="${PrefixDir}"llvm-size \
+        STRIP="${PrefixDir}"llvm-strip \
         CLANG_TRIPLE=${TRIPLE} \
         CROSS_COMPILE=${ARM64} \
         CROSS_COMPILE_COMPAT=${ARM32} \
         CROSS_COMPILE_ARM32=${ARM32} \
-        LLVM=1 2>&1 | tee ${KERNEL_LOG}
+        LLVM=1 2>&1 | tee "${KERNEL_LOG}"
 
     if [[ -f "$KERNEL_IMG" ]]; then
-        END=$(date +"%s")
-        TOTAL_TIME=$(("END" - "START"))
         msg "* Compile Kernel for $DEVICE successfully."
-        msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
     else
         err "* Compile Kernel for $DEVICE failed, See buildlog to fix errors"
         send_file "$KERNEL_LOG" "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
@@ -193,19 +193,22 @@ elif [[ "${COMPILE}" == "gcc" ]]; then
         READELF=llvm-readelf \
         CROSS_COMPILE=${ARM64} \
         CROSS_COMPILE_COMPAT=${ARM32} \
-        CROSS_COMPILE_ARM32=${ARM32} 2>&1 | tee ${KERNEL_LOG}
+        CROSS_COMPILE_ARM32=${ARM32} 2>&1 | tee "${KERNEL_LOG}"
 
     if [[ -f "$KERNEL_IMG" ]]; then
-        END=$(date +"%s")
-        TOTAL_TIME=$(("END" - "START"))
         msg "* Compile Kernel for $DEVICE successfully."
-        msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
     else
         err "* Compile Kernel for $DEVICE failed, See buildlog to fix errors"
         send_file "$KERNEL_LOG" "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
         exit
     fi
 fi
+
+# End compile
+END=$(date +"%s")
+TOTAL_TIME=$(("END" - "START"))
+export START END TOTAL_TIME
+msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
 
 # Copy Image, dtbo, dtb
 if [[ -f "$KERNEL_IMG" ]] || [[ -f "$KERNEL_DTBO" ]] || [[ -f "$KERNEL_DTB" ]]; then
