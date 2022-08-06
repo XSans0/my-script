@@ -51,8 +51,8 @@ elif [[ "${TC}" == "weebx14" ]]; then
 elif [[ "${TC}" == "gcc12" ]]; then
     msg "* Clone GCC 12.x"
     GCC=y
-    git clone --depth=1 -b gcc-new https://github.com/mvaisakh/gcc-arm64.git arm64
-    git clone --depth=1 -b gcc-new https://github.com/mvaisakh/gcc-arm.git arm32
+    git clone --depth=1 -b elf-gcc-12-tarballs https://github.com/fiqri19102002/aarch64-gcc.git arm64
+    git clone --depth=1 -b elf-gcc-12-tarballs https://github.com/fiqri19102002/arm-gcc.git arm32
 fi
 
 # Setup
