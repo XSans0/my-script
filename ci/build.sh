@@ -36,14 +36,6 @@ if [[ "${TC}" == "aosp15" ]]; then
     mkdir clang && tar -xf aosp-clang.tar.gz -C clang && rm -rf aosp-clang.tar.gz
     git clone --depth=1 https://github.com/XSans0/aarch64-linux-android-4.9 arm64
     git clone --depth=1 https://github.com/XSans0/arm-linux-androideabi-4.9 arm32
-elif [[ "${TC}" == "aosp14" ]]; then
-    msg "* Clone AOSP Clang 14.x"
-    AOSP_VER="r450784e"
-    NEED_GCC=y
-    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-"${AOSP_VER}".tar.gz -O "aosp-clang.tar.gz"
-    mkdir clang && tar -xf aosp-clang.tar.gz -C clang && rm -rf aosp-clang.tar.gz
-    git clone --depth=1 https://github.com/XSans0/aarch64-linux-android-4.9 arm64
-    git clone --depth=1 https://github.com/XSans0/arm-linux-androideabi-4.9 arm32
 elif [[ "${TC}" == "weebx" ]]; then
     msg "* Clone WeebX Clang 16.x"
     wget https://raw.githubusercontent.com/XSans0/WeebX-Clang/main/16.0.0-link.txt -O "link.txt"
