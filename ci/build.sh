@@ -108,12 +108,21 @@ else
     KBUILD_COMPILER_STRING="$("${CLANG_DIR}"/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 fi
 
+# Generated KBUILD_BUILD_HOST when running on Github Actions / Cirrus CI
+# Generated custom KBUILD_BUILD_HOST when not running on Github Actions / Cirrus CI
+if [ ${GITHUB_ACTIONS} ]; then
+    export KBUILD_BUILD_HOST="Github-Actions"
+elif [ ${CIRRUS_CI} ]; then
+    export KBUILD_BUILD_HOST="Cirrus-CI"
+else
+    export KBUILD_BUILD_HOST="Wibu-Server"
+fi
+
 # Export
 export TZ="Asia/Jakarta"
 export ARCH="arm64"
 export SUBARCH="arm64"
 export KBUILD_BUILD_USER="XSansツ"
-export KBUILD_BUILD_HOST="Wibu-Server"
 export BOT_MSG_URL="https://api.telegram.org/bot$BOT_TOKEN/sendMessage"
 export BOT_BUILD_URL="https://api.telegram.org/bot$BOT_TOKEN/sendDocument"
 export PATH
