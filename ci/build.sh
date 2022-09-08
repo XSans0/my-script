@@ -18,8 +18,13 @@ fi
 
 # We only run this when it's not running on GitHub Actions
 if [[ -z ${GITHUB_ACTIONS:-} ]]; then
+    if [ -z "${1}" ]; then
+        err "* Branch is missing!"
+        exit
+    fi
+    KERNEL_BRANCH="$1"
     rm -rf kernel
-    git clone --depth=1 -b "$1" https://github.com/XSans0/kernel_xiaomi_vayu kernel
+    git clone --depth=1 -b "$KERNEL_BRANCH" https://github.com/XSans0/kernel_xiaomi_vayu kernel
     cd kernel || exit
 fi
 
