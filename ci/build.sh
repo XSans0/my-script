@@ -123,8 +123,6 @@ export TZ="Asia/Jakarta"
 export ARCH="arm64"
 export SUBARCH="arm64"
 export KBUILD_BUILD_USER="XSansツ"
-export BOT_MSG_URL="https://api.telegram.org/bot$BOT_TOKEN/sendMessage"
-export BOT_BUILD_URL="https://api.telegram.org/bot$BOT_TOKEN/sendDocument"
 export PATH
 export KBUILD_COMPILER_STRING
 
