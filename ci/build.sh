@@ -109,9 +109,9 @@ fi
 
 # Generated KBUILD_BUILD_HOST when running on Github Actions / Cirrus CI
 # Generated custom KBUILD_BUILD_HOST when not running on Github Actions / Cirrus CI
-if [ ${GITHUB_ACTIONS} ]; then
+if [ "${GITHUB_ACTIONS}" ]; then
     export KBUILD_BUILD_HOST="Github-Actions"
-elif [ ${CIRRUS_CI} ]; then
+elif [ "${CIRRUS_CI}" ]; then
     export KBUILD_BUILD_HOST="Cirrus-CI"
 else
     export KBUILD_BUILD_HOST="Wibu-Server"
