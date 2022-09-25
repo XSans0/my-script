@@ -11,22 +11,18 @@ err() {
 }
 
 # Cancel if something is missing
-if [[ -z "${TELEGRAM_TOKEN}" ]] || [[ -z "${TELEGRAM_CHAT}" ]] || [[ -z "${TC}" ]]; then
+if [[ -z "${TELEGRAM_TOKEN}" ]] || [[ -z "${TELEGRAM_CHAT}" ]] || [[ -z "${TC}" ]] || [[ -z "${1}" ]]; then
     err "* There is something missing!"
     exit
 fi
 
-# We only run this when it's not running on GitHub Actions
-if [[ -z ${GITHUB_ACTIONS:-} ]]; then
-    if [ -z "${1}" ]; then
-        err "* Branch is missing!"
-        exit
-    fi
-    KERNEL_BRANCH="$1"
-    rm -rf kernel
-    git clone --depth=1 -b "$KERNEL_BRANCH" https://github.com/XSans0/kernel_xiaomi_vayu kernel
-    cd kernel || exit
-fi
+# Remove old source
+rm -rf kernel
+
+# Clone kernel source
+KERNEL_BRANCH="$1"
+git clone --depth=1 -b "$KERNEL_BRANCH" https://github.com/XSans0/kernel_xiaomi_vayu kernel
+cd kernel || exit
 
 # Clone AnyKernel3 source
 msg "* Clone AnyKernel3 source"
