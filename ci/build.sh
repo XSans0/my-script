@@ -43,10 +43,13 @@ elif [[ "${TC}" == "weebx" ]]; then
     mkdir clang && tar -xf weebx-clang.tar.gz -C clang && rm -rf weebx-clang.tar.gz link.txt
 elif [[ "${TC}" == "weebx15" ]]; then
     msg "* Clone WeebX Clang 15.x good revision"
-    git clone --depth=1 -b release/15-gr --depth=1 https://gitlab.com/XSans0/weebx-clang.git clang
+    git clone --depth=1 -b release/15-gr https://gitlab.com/XSans0/weebx-clang.git clang
 elif [[ "${TC}" == "weebx14" ]]; then
     msg "* Clone WeebX Clang 14.x"
-    git clone --depth=1 -b main --depth=1 https://gitlab.com/XSans0/weebx-clang.git clang
+    git clone --depth=1 -b main https://gitlab.com/XSans0/weebx-clang.git clang
+elif [[ "${TC}" == "proton" ]]; then
+    msg "* Clone Proton Clang 13.x"
+    git clone --depth=1 https://github.com/kdrag0n/proton-clang.git clang
 elif [[ "${TC}" == "gcc13" ]]; then
     msg "* Clone GCC 13.x"
     GCC=y
