@@ -113,7 +113,7 @@ if [ "${GITHUB_ACTIONS}" ]; then
 elif [ "${CIRRUS_CI}" ]; then
     export KBUILD_BUILD_HOST="Cirrus-CI"
 else
-    export KBUILD_BUILD_HOST="Wibu-Server"
+    export KBUILD_BUILD_HOST="WeebX"
 fi
 
 # Export
