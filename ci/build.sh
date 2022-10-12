@@ -38,11 +38,11 @@ if [[ "${TC}" == "aosp15" ]]; then
     git clone --depth=1 https://github.com/XSans0/arm-linux-androideabi-4.9 arm32
 elif [[ "${TC}" == "weebx" ]]; then
     msg "* Clone WeebX Clang 16.x"
-    wget "$(curl -s https://raw.githubusercontent.com/XSans0/WeebX-Clang/main/16.0.0-link.txt)" -O "weebx-clang.tar.gz"
+    wget "$(curl -s https://raw.githubusercontent.com/XSans0/WeebX-Clang/main/16.0.0/link.txt)" -O "weebx-clang.tar.gz"
     mkdir clang && tar -xf weebx-clang.tar.gz -C clang && rm -rf weebx-clang.tar.gz link.txt
 elif [[ "${TC}" == "weebx15" ]]; then
     msg "* Clone WeebX Clang 15.x"
-    wget "$(curl -s https://raw.githubusercontent.com/XSans0/WeebX-Clang/main/15.0.2-link.txt)" -O "weebx-clang.tar.gz"
+    wget "$(curl -s https://raw.githubusercontent.com/XSans0/WeebX-Clang/main/15.0.3/link.txt)" -O "weebx-clang.tar.gz"
     mkdir clang && tar -xf weebx-clang.tar.gz -C clang && rm -rf weebx-clang.tar.gz link.txt
 elif [[ "${TC}" == "weebx14" ]]; then
     msg "* Clone WeebX Clang 14.x"
