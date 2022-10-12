@@ -32,7 +32,7 @@ git clone --depth=1 -b vayu https://github.com/XSans0/AnyKernel3 AK3
 if [[ "${TC}" == "aosp15" ]]; then
     msg "* Clone AOSP Clang 15.x"
     NEED_GCC=y
-    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r468909.tar.gz -O "aosp-clang.tar.gz"
+    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r468909b.tar.gz -O "aosp-clang.tar.gz"
     mkdir clang && tar -xf aosp-clang.tar.gz -C clang && rm -rf aosp-clang.tar.gz
     git clone --depth=1 https://github.com/XSans0/aarch64-linux-android-4.9 arm64
     git clone --depth=1 https://github.com/XSans0/arm-linux-androideabi-4.9 arm32
