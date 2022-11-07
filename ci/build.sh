@@ -42,7 +42,7 @@ elif [[ "${TC}" == "weebx" ]]; then
     mkdir clang && tar -xf weebx-clang.tar.gz -C clang && rm -rf weebx-clang.tar.gz link.txt
 elif [[ "${TC}" == "weebx15" ]]; then
     msg "* Clone WeebX Clang 15.x"
-    wget "$(curl -s https://raw.githubusercontent.com/XSans0/WeebX-Clang/main/15.0.3/link.txt)" -O "weebx-clang.tar.gz"
+    wget "$(curl -s https://raw.githubusercontent.com/XSans0/WeebX-Clang/main/15.0.4/link.txt)" -O "weebx-clang.tar.gz"
     mkdir clang && tar -xf weebx-clang.tar.gz -C clang && rm -rf weebx-clang.tar.gz link.txt
 elif [[ "${TC}" == "weebx14" ]]; then
     msg "* Clone WeebX Clang 14.x"
