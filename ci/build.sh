@@ -168,7 +168,6 @@ if [[ "${COMPILE}" == "clang" ]]; then
         CC="${PrefixDir}"clang \
         LD="${PrefixDir}"ld.lld \
         AR="${PrefixDir}"llvm-ar \
-        AS="${PrefixDir}"llvm-as \
         NM="${PrefixDir}"llvm-nm \
         HOSTCC="${PrefixDir}"clang \
         HOSTCXX="${PrefixDir}"clang++ \
@@ -180,7 +179,9 @@ if [[ "${COMPILE}" == "clang" ]]; then
         STRIP="${PrefixDir}"llvm-strip \
         CLANG_TRIPLE=${TRIPLE} \
         CROSS_COMPILE=${ARM64} \
-        CROSS_COMPILE_ARM32=${ARM32} 2>&1 | tee "${KERNEL_LOG}"
+        CROSS_COMPILE_COMPAT=${ARM32} \
+        CROSS_COMPILE_ARM32=${ARM32} \
+        LLVM=1 2>&1 | tee "${KERNEL_LOG}"
 
     if [[ -f "$KERNEL_IMG" ]]; then
         msg "* Compile Kernel for $DEVICE successfully."
