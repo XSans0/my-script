@@ -66,7 +66,7 @@ fi
 KERNEL_DIR="$PWD"
 KERNEL_IMG="$KERNEL_DIR/out/arch/arm64/boot/Image"
 KERNEL_DTBO="$KERNEL_DIR/out/arch/arm64/boot/dtbo.img"
-KERNEL_DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sm8150-v2-xiaomi.dtb"
+KERNEL_DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sm8150-v2.dtb"
 KERNEL_LOG="$KERNEL_DIR/out/log-$(TZ=Asia/Jakarta date +'%H%M').txt"
 AK3_DIR="$KERNEL_DIR/AK3"
 DEVICE="vayu"
