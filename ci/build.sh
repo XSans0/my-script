@@ -20,9 +20,12 @@ fi
 rm -rf kernel
 
 # Clone kernel source
-KERNEL_BRANCH="$1"
-git clone --depth=1 -b "$KERNEL_BRANCH" https://github.com/XSans0/kernel_xiaomi_vayu kernel
-cd kernel || exit
+if [ -z "${CODESPACES}" ]; then
+    msg "* Clone Kernel Source"
+    KERNEL_BRANCH="$1"
+    git clone --depth=1 -b "$KERNEL_BRANCH" https://github.com/XSans0/kernel_xiaomi_vayu kernel
+    cd kernel || exit
+fi
 
 # Clone AnyKernel3 source
 msg "* Clone AnyKernel3 source"
@@ -112,6 +115,8 @@ if [ "${GITHUB_ACTIONS}" ]; then
     export KBUILD_BUILD_HOST="Github-Actions"
 elif [ "${CIRRUS_CI}" ]; then
     export KBUILD_BUILD_HOST="Cirrus-CI"
+elif [ "${CODESPACES}" ]; then
+    export KBUILD_BUILD_HOST="Codespaces"
 else
     export KBUILD_BUILD_HOST="WeebX"
 fi
