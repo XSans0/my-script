@@ -69,7 +69,7 @@ fi
 KERNEL_DIR="$PWD"
 KERNEL_IMG="$KERNEL_DIR/out/arch/arm64/boot/Image"
 KERNEL_DTBO="$KERNEL_DIR/out/arch/arm64/boot/dtbo.img"
-KERNEL_DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sm8150-v2.dtb"
+KERNEL_DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sm8150-v2-xiaomi.dtb"
 KERNEL_LOG="$KERNEL_DIR/out/log-$(TZ=Asia/Jakarta date +'%H%M').txt"
 AK3_DIR="$KERNEL_DIR/AK3"
 DEVICE="vayu"
@@ -100,7 +100,6 @@ elif [[ "$GCC" == "y" ]]; then
     KBUILD_COMPILER_STRING="$("${GCC64_DIR}"/bin/aarch64-elf-gcc --version | head -n 1)"
 else
     CLANG_DIR="$KERNEL_DIR/clang"
-    PrefixDir="$CLANG_DIR/bin/"
     ARM64="aarch64-linux-gnu-"
     ARM32="arm-linux-gnueabi-"
     TRIPLE="aarch64-linux-gnu-"
@@ -170,23 +169,17 @@ start_msg
 if [[ "${COMPILE}" == "clang" ]]; then
     make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
-        CC="${PrefixDir}"clang \
-        LD="${PrefixDir}"ld.lld \
-        AR="${PrefixDir}"llvm-ar \
-        NM="${PrefixDir}"llvm-nm \
-        HOSTCC="${PrefixDir}"clang \
-        HOSTCXX="${PrefixDir}"clang++ \
-        STRIP="${PrefixDir}"llvm-strip \
-        OBJCOPY="${PrefixDir}"llvm-objcopy \
-        OBJDUMP="${PrefixDir}"llvm-objdump \
-        READELF="${PrefixDir}"llvm-readelf \
-        OBJSIZE="${PrefixDir}"llvm-size \
-        STRIP="${PrefixDir}"llvm-strip \
+        CC=clang \
+        LD=ld.lld \
+        AR=llvm-ar \
+        AS=llvm-as \
+        NM=llvm-nm \
+        STRIP=llvm-strip \
+        OBJCOPY=llvm-objcopy \
+        OBJDUMP=llvm-objdump \
         CLANG_TRIPLE=${TRIPLE} \
         CROSS_COMPILE=${ARM64} \
-        CROSS_COMPILE_COMPAT=${ARM32} \
-        CROSS_COMPILE_ARM32=${ARM32} \
-        LLVM=1 2>&1 | tee "${KERNEL_LOG}"
+        CROSS_COMPILE_ARM32=${ARM32} 2>&1 | tee "${KERNEL_LOG}"
 
     if [[ -f "$KERNEL_IMG" ]]; then
         msg "* Compile Kernel for $DEVICE successfully."
