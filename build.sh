@@ -1,14 +1,4 @@
 #!/usr/bin/env bash
-#
-#######
-# Simple script for compile kernel 
-####### By XSans0 @ github
-#
-####### Needed environment
-# TELEGRAM_TOKEN    | Telegram bot token
-# TELEGRAM_CHAT     | Telegram chat/channel IDs
-# BRANCH            | Kernel Branch
-#######
 
 # Function to show an informational message
 msg() {
