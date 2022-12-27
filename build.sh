@@ -43,7 +43,7 @@ if [ -d "../clang" ]; then
 else
     msg "* Clone Toolchain source"
     msg ""
-    git clone https://gitlab.com/XSans0/weebx-clang ../clang
+    git clone https://github.com/kdrag0n/proton-clang ../clang
 fi
 
 # Setup
