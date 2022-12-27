@@ -27,14 +27,14 @@ fi
 msg "* Clone kernel source"
 msg ""
 rm -rf kernel
-git clone -b "$BRANCH" https://github.com/XSans0/kernel_xiaomi_vayu kernel
+git clone --depth=1 -b "$BRANCH" https://github.com/XSans0/kernel_xiaomi_vayu kernel
 cd kernel || exit
 
 # Anykernel3
 msg "* Clone AnyKernel3 source"
 msg ""
 rm -rf AK3
-git clone -b vayu https://github.com/XSans0/AnyKernel3 AK3
+git clone --depth=1 -b vayu https://github.com/XSans0/AnyKernel3 AK3
 
 # Toolchain
 if [ -d "../clang" ]; then
@@ -43,7 +43,7 @@ if [ -d "../clang" ]; then
 else
     msg "* Clone Toolchain source"
     msg ""
-    git clone https://github.com/kdrag0n/proton-clang ../clang
+    git clone --depth=1 https://github.com/kdrag0n/proton-clang ../clang
 fi
 
 # Setup
