@@ -28,13 +28,13 @@ fi
 # Kernel source
 msg "* Clone kernel source"
 rm -rf kernel
-git clone --depth=1 -b "$BRANCH" https://github.com/XSans0/kernel_xiaomi_vayu kernel
+git clone --depth=1 -b "$BRANCH" https://github.com/elizabethangelalorenza/kernel_xiaomi_vayu kernel
 cd kernel || exit
 
 # Anykernel3
 msg "* Clone AnyKernel3 source"
 rm -rf AK3
-git clone --depth=1 -b vayu https://github.com/XSans0/AnyKernel3 AK3
+git clone --depth=1 -b vayu https://github.com/elizabethangelalorenza/AnyKernel3 AK3
 
 # Toolchain
 if [ -d "$HOME_DIR/clang" ]; then
@@ -42,7 +42,10 @@ if [ -d "$HOME_DIR/clang" ]; then
     msg ""
 else
     msg "* Clone Toolchain source"
-    git clone --depth=1 https://github.com/kdrag0n/proton-clang "$HOME_DIR"/clang
+    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r475365b.tar.gz -O "aosp-clang.tar.gz"
+    mkdir clang && tar -xf aosp-clang.tar.gz -C clang && rm -rf aosp-clang.tar.gz
+    git clone --depth=1 https://github.com/XSans0/aarch64-linux-android-4.9 "$HOME_DIR"/arm64
+    git clone --depth=1 https://github.com/XSans0/arm-linux-androideabi-4.9 "$HOME_DIR"/arm32
 fi
 
 # Setup
@@ -53,6 +56,8 @@ KERNEL_DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sm8150-v2.dtb"
 KERNEL_LOG="$KERNEL_DIR/out/log-$(TZ=Asia/Jakarta date +'%H%M').txt"
 AK3_DIR="$KERNEL_DIR/AK3"
 CLANG_DIR="$HOME_DIR/clang"
+GCC64_DIR="$HOME_DIR/arm64"
+GCC32_DIR="$HOME_DIR/arm32"
 PrefixDir="$CLANG_DIR/bin/"
 KBUILD_COMPILER_STRING="$("${CLANG_DIR}"/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 ARM64="aarch64-linux-gnu-"
@@ -67,7 +72,7 @@ export ARCH="arm64"
 export SUBARCH="arm64"
 export KBUILD_BUILD_USER="vayu"
 export KBUILD_BUILD_HOST="evolution"
-export PATH="$CLANG_DIR/bin:$PATH"
+export PATH="$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
 export KBUILD_COMPILER_STRING
 
 # Start compile
