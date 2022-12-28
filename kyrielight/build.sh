@@ -129,7 +129,5 @@ done
 msg ""
 msg "* Create ZIP"
 cd "$AK3_DIR" || exit
-ZIP_DATE="$(TZ=Asia/Jakarta date +'%Y%m%d')"
-ZIP_DATE2="$(TZ=Asia/Jakarta date +'%H%M')"
-ZIP_NAME=["$ZIP_DATE"]WeebX-Personal-"$ZIP_DATE2".zip
+ZIP_NAME=Kyrielight-KATO_"$DEVICE"_"$(date +'%Y%m%d')"_"$(date +'%H%M')".zip
 zip -r9 "$ZIP_NAME" ./*
