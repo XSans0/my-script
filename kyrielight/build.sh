@@ -67,7 +67,6 @@ COMMIT="$(git log --pretty=format:'%s' -1)"
 # Export
 export ARCH="arm64"
 export SUBARCH="arm64"
-export TZ="Asia/Jakarta"
 export KBUILD_BUILD_USER="vayu"
 export KBUILD_BUILD_HOST="evolution"
 export PATH="$CLANG_DIR/bin:$PATH"
