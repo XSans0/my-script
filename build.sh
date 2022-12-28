@@ -145,8 +145,12 @@ msg ""
 # Copy Image/dtbo/dtb to AnyKernel3
 for files in {"$KERNEL_IMG","$KERNEL_DTBO","$KERNEL_DTB"}; do
     if [ -f "$files" ]; then
-        msg "* Copy Image/dtb/dtbo to AnyKernel3"
-        cp -r "$files" "$AK3_DIR"
+        msg "* Copy [$files] to AnyKernel3 directory"
+        if [ "$files" = "$KERNEL_DTB" ]; then
+            cp -r "$files" "$AK3_DIR"/dtb.img
+        else
+            cp -r "$files" "$AK3_DIR"
+        fi
     else
         err "* Image/dtb/dtbo is missing!"
         err ""
