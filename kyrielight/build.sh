@@ -68,7 +68,8 @@ COMMIT="$(git log --pretty=format:'%s' -1)"
 export ARCH="arm64"
 export SUBARCH="arm64"
 export TZ="Asia/Jakarta"
-export KBUILD_BUILD_USER="XSans"
+export KBUILD_BUILD_USER="vayu"
+export KBUILD_BUILD_HOST="evolution"
 export PATH="$CLANG_DIR/bin:$PATH"
 export KBUILD_COMPILER_STRING
 
