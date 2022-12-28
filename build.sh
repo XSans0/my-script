@@ -12,7 +12,6 @@ err() {
 # Environment checker
 if [ -z "$TELEGRAM_TOKEN" ] || [ -z "$TELEGRAM_CHAT" ] || [ -z "$BRANCH" ]; then
     err "* Missing environment!"
-    err ""
     exit
 fi
 
@@ -28,14 +27,12 @@ fi
 
 # Kernel source
 msg "* Clone kernel source"
-msg ""
 rm -rf kernel
 git clone --depth=1 -b "$BRANCH" https://github.com/XSans0/kernel_xiaomi_vayu kernel
 cd kernel || exit
 
 # Anykernel3
 msg "* Clone AnyKernel3 source"
-msg ""
 rm -rf AK3
 git clone --depth=1 -b vayu https://github.com/XSans0/AnyKernel3 AK3
 
@@ -45,7 +42,6 @@ if [ -d "$HOME_DIR/clang" ]; then
     msg ""
 else
     msg "* Clone Toolchain source"
-    msg ""
     git clone --depth=1 https://github.com/kdrag0n/proton-clang "$HOME_DIR"/clang
 fi
 
@@ -112,7 +108,6 @@ start_msg() {
 # Start compile
 START=$(date +"%s")
 msg "* Start Compile kernel for $DEVICE using $CPU $CORES thread"
-msg ""
 start_msg
 
 make O=out "$DEVICE"_defconfig
@@ -134,10 +129,8 @@ make O=out "$DEVICE"_defconfig
 
 if [[ -f "$KERNEL_IMG" ]]; then
     msg "* Compile Kernel for $DEVICE successfully."
-    msg ""
 else
     err "* Compile Kernel for $DEVICE failed, See buildlog to fix errors"
-    err ""
     send_file "$KERNEL_LOG" "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
     exit
 fi
@@ -153,7 +146,6 @@ msg ""
 for files in {"$KERNEL_IMG","$KERNEL_DTBO","$KERNEL_DTB"}; do
     if [ -f "$files" ]; then
         msg "* Copy Image/dtb/dtbo to AnyKernel3"
-        msg ""
         cp -r "$files" "$AK3_DIR"
     else
         err "* Image/dtb/dtbo is missing!"
@@ -163,8 +155,8 @@ for files in {"$KERNEL_IMG","$KERNEL_DTBO","$KERNEL_DTB"}; do
 done
 
 # Compress to ZIP
-msg "* Create ZIP"
 msg ""
+msg "* Create ZIP"
 cd "$AK3_DIR" || exit
 ZIP_DATE="$(TZ=Asia/Jakarta date +'%Y%m%d')"
 ZIP_DATE2="$(TZ=Asia/Jakarta date +'%H%M')"
