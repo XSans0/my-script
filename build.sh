@@ -16,11 +16,14 @@ if [ -z "$TELEGRAM_TOKEN" ] || [ -z "$TELEGRAM_CHAT" ] || [ -z "$BRANCH" ]; then
     exit
 fi
 
+# Home directory
+HOME_DIR="$(pwd)"
+
 # Clean toolchain source
 if [ "$1" = "clean" ]; then
     msg "* Clean toolchain source"
     msg ""
-    rm -rf ../clang
+    rm -rf "$HOME_DIR"/clang
 fi
 
 # Kernel source
@@ -37,13 +40,13 @@ rm -rf AK3
 git clone --depth=1 -b vayu https://github.com/XSans0/AnyKernel3 AK3
 
 # Toolchain
-if [ -d "../clang" ]; then
+if [ -d "$HOME_DIR/clang" ]; then
     msg "* Toolchain already exist!"
     msg ""
 else
     msg "* Clone Toolchain source"
     msg ""
-    git clone --depth=1 https://github.com/kdrag0n/proton-clang ../clang
+    git clone --depth=1 https://github.com/kdrag0n/proton-clang "$HOME_DIR"/clang
 fi
 
 # Setup
@@ -53,7 +56,7 @@ KERNEL_DTBO="$KERNEL_DIR/out/arch/arm64/boot/dtbo.img"
 KERNEL_DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sm8150-v2.dtb"
 KERNEL_LOG="$KERNEL_DIR/out/log-$(TZ=Asia/Jakarta date +'%H%M').txt"
 AK3_DIR="$KERNEL_DIR/AK3"
-CLANG_DIR="$KERNEL_DIR/clang"
+CLANG_DIR="$HOME_DIR/clang"
 PrefixDir="$CLANG_DIR/bin/"
 KBUILD_COMPILER_STRING="$("${CLANG_DIR}"/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 ARM64="aarch64-linux-gnu-"
