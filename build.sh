@@ -72,6 +72,13 @@ export KBUILD_BUILD_USER="XSans"
 export PATH="$CLANG_DIR/bin:$PATH"
 export KBUILD_COMPILER_STRING
 
+# Build host setup
+if [ "$CIRRUS_CI" ]; then
+    export KBUILD_BUILD_HOST="Cirrus"
+elif [ "$USER" = "gitpod" ]; then
+    export KBUILD_BUILD_HOST="Gitpod"
+fi
+
 # Telegram Setup
 git clone --depth=1 https://github.com/XSans0/Telegram Telegram
 
