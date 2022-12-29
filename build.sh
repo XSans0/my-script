@@ -72,10 +72,12 @@ export KBUILD_BUILD_USER="XSans"
 export PATH="$CLANG_DIR/bin:$PATH"
 export KBUILD_COMPILER_STRING
 
-# Build host setup
+# Setup KBUILD_BUILD_HOST from default environment
 if [ "$CIRRUS_CI" ]; then
+    msg "* Set [Cirrus] as KBUILD_BUILD_HOST"
     export KBUILD_BUILD_HOST="Cirrus"
 elif [ "$USER" = "gitpod" ]; then
+    msg "* Set [Gitpod] as KBUILD_BUILD_HOST"
     export KBUILD_BUILD_HOST="Gitpod"
 fi
 
