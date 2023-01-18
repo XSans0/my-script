@@ -129,5 +129,5 @@ done
 msg ""
 msg "* Create ZIP"
 cd "$AK3_DIR" || exit
-ZIP_NAME=Kyrielight-KATO_"$DEVICE"_"$(date +'%Y%m%d')"_"$(date +'%H%M')".zip
+ZIP_NAME=DeathRhythm_"$DEVICE"_"$(date +'%Y%m%d')"_"$(date +'%H%M')".zip
 zip -r9 "$ZIP_NAME" ./*
