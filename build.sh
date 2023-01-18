@@ -136,20 +136,19 @@ make O=out "$DEVICE"_defconfig
         CROSS_COMPILE_COMPAT="$ARM32" \
         LLVM=1 2>&1 | tee "$KERNEL_LOG"
 
+# End compile
 if [[ -f "$KERNEL_IMG" ]]; then
+    END=$(date +"%s")
+    TOTAL_TIME=$(("END" - "START"))
+    export START END TOTAL_TIME
     msg "* Compile Kernel for $DEVICE successfully."
+    msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
+    msg ""
 else
     err "* Compile Kernel for $DEVICE failed, See buildlog to fix errors"
     send_file "$KERNEL_LOG" "<b>Compile Kernel for $DEVICE failed, See buildlog to fix errors</b>"
     exit
 fi
-
-# End compile
-END=$(date +"%s")
-TOTAL_TIME=$(("END" - "START"))
-export START END TOTAL_TIME
-msg "* Total time elapsed: $(("TOTAL_TIME" / 60)) Minutes, $(("TOTAL_TIME" % 60)) Second."
-msg ""
 
 # Copy Image/dtbo/dtb to AnyKernel3
 for files in {"$KERNEL_IMG","$KERNEL_DTBO","$KERNEL_DTB"}; do
