@@ -58,7 +58,6 @@ AK3_DIR="$KERNEL_DIR/AK3"
 CLANG_DIR="$HOME_DIR/clang"
 GCC64_DIR="$HOME_DIR/arm64"
 GCC32_DIR="$HOME_DIR/arm32"
-PrefixDir="$CLANG_DIR/bin/"
 KBUILD_COMPILER_STRING="$("${CLANG_DIR}"/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 ARM64="aarch64-linux-gnu-"
 ARM32="arm-linux-gnueabi-"
@@ -81,20 +80,10 @@ msg "* Start Compile kernel for $DEVICE using $CPU $CORES thread"
 
 make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
-        HOSTCC="$PrefixDir"clang \
-        HOSTCXX="$PrefixDir"clang++ \
-        CC="$PrefixDir"clang \
-        LD="$PrefixDir"ld.lld \
-        AR="$PrefixDir"llvm-ar \
-        NM="$PrefixDir"llvm-nm \
-        OBJCOPY="$PrefixDir"llvm-objcopy \
-        OBJDUMP="$PrefixDir"llvm-objdump \
-        READELF="$PrefixDir"llvm-readelf \
-        STRIP="$PrefixDir"llvm-strip \
+        LLVM=1
         CLANG_TRIPLE="$TRIPLE" \
         CROSS_COMPILE="$ARM64" \
-        CROSS_COMPILE_COMPAT="$ARM32" \
-        LLVM=1 2>&1 | tee "$KERNEL_LOG"
+        CROSS_COMPILE_COMPAT="$ARM32" 2>&1 | tee "$KERNEL_LOG"
 
 if [[ -f "$KERNEL_IMG" ]]; then
     # End compile
