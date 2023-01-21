@@ -62,6 +62,9 @@ CORES="$(nproc --all)"
 CPU="$(lscpu | sed -nr '/Model name/ s/.*:\s*(.*) */\1/p')"
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 COMMIT="$(git log --pretty=format:'%s' -1)"
+COMMIT_HASH="$(git rev-parse HEAD)"
+SHORT_COMMIT_HASH="$(cut -c-8 <<< "$COMMIT_HASH")"
+COMMIT_URL="https://github.com/XSans0/kernel_xiaomi_vayu/commit/$SHORT_COMMIT_HASH"
 
 # Export
 export ARCH="arm64"
@@ -112,7 +115,7 @@ start_msg() {
                  "<b>Build Using : </b>" \
                  "<code>* $CPU $CORES thread</code>" \
                  "<b>Last Commit : </b>" \
-                 "<code>* $COMMIT</code>" \
+                 "<b>*</b> <a href='$COMMIT_URL'>$COMMIT</a>" \
                  "<b>==================================</b>"
 }
 
