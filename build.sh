@@ -127,6 +127,7 @@ start_msg
 make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
         LLVM=1 \
+        LLVM_IAS=1 \
         CLANG_TRIPLE="$ARM64" \
         CROSS_COMPILE="$ARM64" \
         CROSS_COMPILE_COMPAT="$ARM32" 2>&1 | tee "$KERNEL_LOG"
