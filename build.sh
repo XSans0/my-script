@@ -81,9 +81,9 @@ if [ "$CIRRUS_CI" ]; then
 elif [ "$USER" = "gitpod" ]; then
     msg "* Set [Gitpod] as KBUILD_BUILD_HOST"
     export KBUILD_BUILD_HOST="Gitpod"
-elif [ "$CODESPACES" ]; then
-    msg "* Set [Codespaces] as KBUILD_BUILD_HOST"
-    export KBUILD_BUILD_HOST="Codespaces"
+elif [ "$GITHUB_ACTIONS" ]; then
+    msg "* Set [Github Actions] as KBUILD_BUILD_HOST"
+    export KBUILD_BUILD_HOST="Github-Actions"
 fi
 
 # Telegram Setup
