@@ -42,7 +42,8 @@ if [ -d "$HOME_DIR/clang" ]; then
     msg ""
 else
     msg "* Clone Toolchain source"
-    git clone --depth=1 https://github.com/kdrag0n/proton-clang "$HOME_DIR"/clang
+    wget "$(curl -s https://raw.githubusercontent.com/XSans0/WeebX-Clang/main/main/link.txt)" -O "weebx-clang.tar.gz"
+    mkdir "$HOME_DIR"/clang && tar -xf weebx-clang.tar.gz -C "$HOME_DIR"/clang && rm -rf weebx-clang.tar.gz
 fi
 
 # Setup
@@ -56,7 +57,6 @@ CLANG_DIR="$HOME_DIR/clang"
 KBUILD_COMPILER_STRING="$("${CLANG_DIR}"/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 ARM64="aarch64-linux-gnu-"
 ARM32="arm-linux-gnueabi-"
-TRIPLE="aarch64-linux-gnu-"
 DEVICE="vayu"
 CORES="$(nproc --all)"
 CPU="$(lscpu | sed -nr '/Model name/ s/.*:\s*(.*) */\1/p')"
@@ -127,7 +127,7 @@ start_msg
 make O=out "$DEVICE"_defconfig
     make -j"$CORES" O=out \
         LLVM=1 \
-        CLANG_TRIPLE="$TRIPLE" \
+        CLANG_TRIPLE="$ARM64" \
         CROSS_COMPILE="$ARM64" \
         CROSS_COMPILE_COMPAT="$ARM32" 2>&1 | tee "$KERNEL_LOG"
 
