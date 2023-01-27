@@ -84,6 +84,9 @@ elif [ "$USER" = "gitpod" ]; then
 elif [ "$GITHUB_ACTIONS" ]; then
     msg "* Set [Github Actions] as KBUILD_BUILD_HOST"
     export KBUILD_BUILD_HOST="Github-Actions"
+elif [ "$HARNESS_ACCOUNT_ID" ]; then
+    msg "* Set [Harness] as KBUILD_BUILD_HOST"
+    export KBUILD_BUILD_HOST="Harness"
 fi
 
 # Telegram Setup
