@@ -76,16 +76,16 @@ export KBUILD_COMPILER_STRING
 
 # Setup KBUILD_BUILD_HOST from default environment
 if [ "$CIRRUS_CI" ]; then
-    msg "* Set [Cirrus] as KBUILD_BUILD_HOST"
+    msg "* Set [ Cirrus ] as KBUILD_BUILD_HOST"
     export KBUILD_BUILD_HOST="Cirrus"
 elif [ "$USER" = "gitpod" ]; then
-    msg "* Set [Gitpod] as KBUILD_BUILD_HOST"
+    msg "* Set [ Gitpod ] as KBUILD_BUILD_HOST"
     export KBUILD_BUILD_HOST="Gitpod"
 elif [ "$GITHUB_ACTIONS" ]; then
-    msg "* Set [Github Actions] as KBUILD_BUILD_HOST"
+    msg "* Set [ Github Actions ] as KBUILD_BUILD_HOST"
     export KBUILD_BUILD_HOST="Github-Actions"
 elif [ "$HARNESS_ACCOUNT_ID" ]; then
-    msg "* Set [Harness] as KBUILD_BUILD_HOST"
+    msg "* Set [ Harness ] as KBUILD_BUILD_HOST"
     export KBUILD_BUILD_HOST="Harness"
 fi
 
