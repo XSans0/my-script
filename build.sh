@@ -63,7 +63,7 @@ CPU="$(lscpu | sed -nr '/Model name/ s/.*:\s*(.*) */\1/p')"
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 COMMIT="$(git log --pretty=format:'%s' -1)"
 COMMIT_HASH="$(git rev-parse HEAD)"
-SHORT_COMMIT_HASH="$(cut -c-8 <<< "$COMMIT_HASH")"
+SHORT_COMMIT_HASH="$(cut -c-8 <<<"$COMMIT_HASH")"
 COMMIT_URL="https://github.com/XSans0/kernel_xiaomi_vayu/commit/$SHORT_COMMIT_HASH"
 
 # Export
@@ -94,32 +94,32 @@ git clone --depth=1 https://github.com/XSans0/Telegram Telegram
 
 TELEGRAM="$KERNEL_DIR/Telegram/telegram"
 send_msg() {
-  "${TELEGRAM}" -H -D \
-      "$(
-          for POST in "${@}"; do
-              echo "${POST}"
-          done
-      )"
+    "${TELEGRAM}" -H -D \
+        "$(
+            for POST in "${@}"; do
+                echo "${POST}"
+            done
+        )"
 }
 
 send_file() {
     "${TELEGRAM}" -H \
-    -f "$1" \
-    "$2"
+        -f "$1" \
+        "$2"
 }
 
 start_msg() {
     send_msg "<b>New Kernel On The Way</b>" \
-                 "<b>==================================</b>" \
-                 "<b>Device : </b>" \
-                 "<code>* $DEVICE</code>" \
-                 "<b>Branch : </b>" \
-                 "<code>* $BRANCH</code>" \
-                 "<b>Build Using : </b>" \
-                 "<code>* $CPU $CORES thread</code>" \
-                 "<b>Last Commit : </b>" \
-                 "<b>*</b> <a href='$COMMIT_URL'>$COMMIT</a>" \
-                 "<b>==================================</b>"
+        "<b>==================================</b>" \
+        "<b>Device : </b>" \
+        "<code>* $DEVICE</code>" \
+        "<b>Branch : </b>" \
+        "<code>* $BRANCH</code>" \
+        "<b>Build Using : </b>" \
+        "<code>* $CPU $CORES thread</code>" \
+        "<b>Last Commit : </b>" \
+        "<b>*</b> <a href='$COMMIT_URL'>$COMMIT</a>" \
+        "<b>==================================</b>"
 }
 
 # Start compile
@@ -128,12 +128,12 @@ msg "* Start Compile kernel for $DEVICE using $CPU $CORES thread"
 start_msg
 
 make O=out "$DEVICE"_defconfig
-    make -j"$CORES" O=out \
-        LLVM=1 \
-        LLVM_IAS=1 \
-        CLANG_TRIPLE="$ARM64" \
-        CROSS_COMPILE="$ARM64" \
-        CROSS_COMPILE_COMPAT="$ARM32" 2>&1 | tee "$KERNEL_LOG"
+make -j"$CORES" O=out \
+    LLVM=1 \
+    LLVM_IAS=1 \
+    CLANG_TRIPLE="$ARM64" \
+    CROSS_COMPILE="$ARM64" \
+    CROSS_COMPILE_COMPAT="$ARM32" 2>&1 | tee "$KERNEL_LOG"
 
 # End compile
 if [[ -f "$KERNEL_IMG" ]]; then
