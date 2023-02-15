@@ -42,7 +42,7 @@ if [ -d "$HOME_DIR/clang" ]; then
     msg ""
 else
     msg "* Clone Toolchain source"
-    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r475365b.tar.gz -O "aosp-clang.tar.gz"
+    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r487747.tar.gz -O "aosp-clang.tar.gz"
     mkdir clang && tar -xf aosp-clang.tar.gz -C clang && rm -rf aosp-clang.tar.gz
     git clone --depth=1 https://github.com/XSans0/aarch64-linux-android-4.9 "$HOME_DIR"/arm64
     git clone --depth=1 https://github.com/XSans0/arm-linux-androideabi-4.9 "$HOME_DIR"/arm32
