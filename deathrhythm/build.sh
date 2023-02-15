@@ -79,11 +79,11 @@ START=$(date +"%s")
 msg "* Start Compile kernel for $DEVICE using $CPU $CORES thread"
 
 make O=out "$DEVICE"_defconfig
-    make -j"$CORES" O=out \
-        LLVM=1
-        CLANG_TRIPLE="$TRIPLE" \
-        CROSS_COMPILE="$ARM64" \
-        CROSS_COMPILE_COMPAT="$ARM32" 2>&1 | tee "$KERNEL_LOG"
+make -j"$CORES" O=out \
+    LLVM=1 \
+    CLANG_TRIPLE="$TRIPLE" \
+    CROSS_COMPILE="$ARM64" \
+    CROSS_COMPILE_COMPAT="$ARM32" 2>&1 | tee "$KERNEL_LOG"
 
 if [[ -f "$KERNEL_IMG" ]]; then
     # End compile
