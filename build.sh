@@ -122,6 +122,15 @@ start_msg() {
         "<b>==================================</b>"
 }
 
+# MIUI support
+if [ "$MIUI" == "y" ]; then
+    msg "* Apply MIUI patch"
+    git apply "$HOME_DIR"/patch/fix_physical_dimensions_miui.patch
+
+    msg "* Setup MIUI zipname"
+    KERNEL_VER="-MIUI"
+fi
+
 # Start compile
 START=$(date +"%s")
 msg "* Start Compile kernel for $DEVICE using $CPU $CORES thread"
@@ -171,7 +180,7 @@ msg "* Create ZIP"
 cd "$AK3_DIR" || exit
 ZIP_DATE="$(TZ=Asia/Jakarta date +'%Y%m%d')"
 ZIP_DATE2="$(TZ=Asia/Jakarta date +'%H%M')"
-ZIP_NAME=["$ZIP_DATE"]WeebX-Personal-"$ZIP_DATE2".zip
+ZIP_NAME=["$ZIP_DATE"]WeebX-Personal-"$ZIP_DATE2""$KERNEL_VER".zip
 zip -r9 "$ZIP_NAME" ./*
 
 # Upload build to telegram
