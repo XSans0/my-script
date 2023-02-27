@@ -33,7 +33,6 @@ cd kernel || exit
 
 # Anykernel3
 msg "* Clone AnyKernel3 source"
-rm -rf AK3
 git clone --depth=1 -b vayu https://github.com/XSans0/AnyKernel3 AK3
 
 # Toolchain
