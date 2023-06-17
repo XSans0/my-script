@@ -208,4 +208,6 @@ send_file "$AK3_DIR/$ZIP_NAME" "
 <code>* $(md5sum "$AK3_DIR/$ZIP_NAME" | cut -d' ' -f1)</code>
 <b>Compiler : </b>
 <code>* $KBUILD_COMPILER_STRING</code>
+<b>Mirror Link : </b>
+<code>* </code><a href='https://pixeldrain.com/api/file/$id'>$ZIP_NAME</a>
 <b>============================</b>"
