@@ -182,7 +182,18 @@ ZIP_DATE2="$(TZ=Asia/Jakarta date +'%H%M')"
 ZIP_NAME=["$ZIP_DATE"]WeebX-Personal-"$ZIP_DATE2""$KERNEL_VER".zip
 zip -r9 "$ZIP_NAME" ./*
 
-# Upload build to telegram
+# Upload to PixelDrain
+if [ -z "$PD_API_KEY "]; then
+    response="$(curl -sT "$AK3_DIR/$ZIP_NAME" https://pixeldrain.com/api/file/)"
+    id="$(echo "$response" | jq -r .id)"
+    msg "File uploaded to : https://pixeldrain.com/api/file/$id"
+else
+    response="$(curl -sT "$AK3_DIR/$ZIP_NAME" -u :"$PD_API_KEY" https://pixeldrain.com/api/file/)"
+    id="$(echo "$response" | jq -r .id)"
+    msg "File uploaded to : https://pixeldrain.com/api/file/$id"
+fi
+
+# Upload to telegram
 send_file "$KERNEL_LOG" "<b>Compile Kernel for $DEVICE successfully.</b>"
 send_file "$AK3_DIR/$ZIP_NAME" "
 <b>Build Successfully</b>
