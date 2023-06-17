@@ -179,7 +179,7 @@ msg "* Create ZIP"
 cd "$AK3_DIR" || exit
 ZIP_DATE="$(TZ=Asia/Jakarta date +'%Y%m%d')"
 ZIP_DATE2="$(TZ=Asia/Jakarta date +'%H%M')"
-ZIP_NAME=["$ZIP_DATE"]WeebX-Personal-"$ZIP_DATE2""$KERNEL_VER".zip
+ZIP_NAME="WeebX-Personal-$ZIP_DATE-$ZIP_DATE2$KERNEL_VER.zip"
 zip -r9 "$ZIP_NAME" ./*
 
 # Upload to PixelDrain
