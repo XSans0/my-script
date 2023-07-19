@@ -130,6 +130,12 @@ if [ "$MIUI" == "y" ]; then
     KERNEL_VER="-MIUI"
 fi
 
+# Setup and apply patch KernelSU in root dir
+if ! [ -d "$KERNEL_DIR"/KernelSU ]; then
+    curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
+    git apply KernelSU-hook.patch
+fi
+
 # Start compile
 START=$(date +"%s")
 msg "* Start Compile kernel for $DEVICE using $CPU $CORES thread"
