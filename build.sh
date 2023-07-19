@@ -183,7 +183,7 @@ ZIP_NAME="WeebX-Personal-$ZIP_DATE-$ZIP_DATE2$KERNEL_VER.zip"
 zip -r9 "$ZIP_NAME" ./*
 
 # Upload to PixelDrain
-if [ -z "$PD_API_KEY "]; then
+if [ -z "$PD_API_KEY" ]; then
     response="$(curl -sT "$AK3_DIR/$ZIP_NAME" https://pixeldrain.com/api/file/)"
     id="$(echo "$response" | jq -r .id)"
     msg "File uploaded to : https://pixeldrain.com/api/file/$id"
