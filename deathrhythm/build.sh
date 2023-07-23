@@ -75,6 +75,12 @@ export KBUILD_BUILD_HOST="evolution"
 export PATH="$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
 export KBUILD_COMPILER_STRING
 
+# Setup and apply patch KernelSU in root dir
+if ! [ -d "$KERNEL_DIR"/KernelSU ]; then
+    curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
+    git apply KernelSU-hook.patch
+fi
+
 # Start compile
 START=$(date +"%s")
 msg "* Start Compile kernel for $DEVICE using $CPU $CORES thread"
