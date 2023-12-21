@@ -41,8 +41,10 @@ if [ -d "$HOME_DIR/clang" ]; then
     msg ""
 else
     msg "* Clone Toolchain source"
-    wget "$(curl -s https://raw.githubusercontent.com/XSans0/WeebX-Clang/main/main/link.txt)" -O "weebx-clang.tar.gz"
-    mkdir "$HOME_DIR"/clang && tar -xf weebx-clang.tar.gz -C "$HOME_DIR"/clang && rm -rf weebx-clang.tar.gz
+    wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r498229b.tar.gz -O "aosp-clang.tar.gz"
+    mkdir "$HOME_DIR"/clang && tar -xf aosp-clang.tar.gz -C "$HOME_DIR"/clang && rm -rf aosp-clang.tar.gz
+    git clone --depth=1 https://github.com/XSans0/aarch64-linux-android-4.9 "$HOME_DIR"/arm64
+    git clone --depth=1 https://github.com/XSans0/arm-linux-androideabi-4.9 "$HOME_DIR"/arm32
 fi
 
 # Setup
@@ -53,9 +55,12 @@ KERNEL_DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sm8150-v2.dtb"
 KERNEL_LOG="$KERNEL_DIR/out/log-$(TZ=Asia/Jakarta date +'%H%M').txt"
 AK3_DIR="$KERNEL_DIR/AK3"
 CLANG_DIR="$HOME_DIR/clang"
+GCC64_DIR="$HOME_DIR/arm64"
+GCC32_DIR="$HOME_DIR/arm32"
 KBUILD_COMPILER_STRING="$("${CLANG_DIR}"/bin/clang --version | head -n 1 | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
-ARM64="aarch64-linux-gnu-"
-ARM32="arm-linux-gnueabi-"
+ARM64="aarch64-linux-android-"
+ARM32="arm-linux-androideabi-"
+TRIPLE="aarch64-linux-gnu-"
 DEVICE="vayu"
 CORES="$(nproc --all)"
 CPU="$(lscpu | sed -nr '/Model name/ s/.*:\s*(.*) */\1/p')"
@@ -70,7 +75,7 @@ export ARCH="arm64"
 export SUBARCH="arm64"
 export TZ="Asia/Jakarta"
 export KBUILD_BUILD_USER="XSans"
-export PATH="$CLANG_DIR/bin:$PATH"
+export PATH="$CLANG_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:$PATH"
 export KBUILD_COMPILER_STRING
 
 # Setup KBUILD_BUILD_HOST from default environment
@@ -145,7 +150,7 @@ make O=out "$DEVICE"_defconfig
 make -j"$CORES" O=out \
     LLVM=1 \
     LLVM_IAS=1 \
-    CLANG_TRIPLE="$ARM64" \
+    CLANG_TRIPLE="$TRIPLE" \
     CROSS_COMPILE="$ARM64" \
     CROSS_COMPILE_COMPAT="$ARM32" 2>&1 | tee "$KERNEL_LOG"
 
